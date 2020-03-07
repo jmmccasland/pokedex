@@ -1,1 +1,59 @@
-hello world
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex</title>
+  <link href="https://fonts.googleapis.com/css?family=Ranchers|Roboto:400,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="site-wrapper">
+  <!-- Header -->
+  <header class="header">
+    <a href="" class="header__logo">Pokedex</a>
+    <nav class="header__nav">
+      <a href="">About</a>
+      <a href="">Pokemon</a>
+      <a href="">Types</a>
+      <a href="">Regions</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="section">
+      <div class="container">
+        <!-- Intro Section -->
+        <h1>Welcome to Pokedex</h1>
+        <p>You can use this site to search for your favorite Pokemon, Pokemon types, and regions!</p>
+        <button class="btn js-get-first-150">Original 150</button>
+        <button class="btn js-get-random-pokemon">Random</button>
+      </div>
+    </section>
+
+    <div class="search-wrapper container">
+      <!-- Search Bar -->
+      <form action="" class="search-form">
+        <input type="text" placeholder="Search for a Pokemon">
+      </form>
+
+      <!-- Pokemon List -->
+      <div class="pokemon-wrapper">
+        <p class="placeholder-list-text">Search by pokemon name or choose a popular search above.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="section">
+    <div class="container">
+      <p>
+        Built by <a href="https://twitter.com/callmejomz" target="_blank">@callmejomz</a> as part of the <a href="https://callmejomz.com/" target="_blank">Casual Intro to Web Development</a> course.
+        <br>
+        Many thanks to the <a href="https://pokeapi.co/about.html" target="_blank">PokeAPI</a> team for their open source contributions.
+      </p>
+    </div>
+  </footer>
+  <script src="index.js"></script>
+</body>
+</html>
