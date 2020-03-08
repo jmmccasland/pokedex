@@ -1,11 +1,54 @@
 const baseUrl = "https://pokeapi.co/api/v2"
 const resultsWrapper = document.querySelector('.pokemon-wrapper');
-const formTimeout = 3000;
+const formTimeout = 1500;
+
+// Utilities
+function colorTypeBox(type) {
+  switch (type) {
+    case "normal":
+      return "#BCBCAE";
+    case "poison":
+      return "#A95CA0";
+    case "psychic":
+      return "#F15FAE";
+    case "grass":
+      return "#86CE4D";
+    case "ground":
+      return "#E8C755";
+    case "ice":
+      return "#96F1FF";
+    case "fire":
+      return "#FA5642";
+    case "rock":
+      return "#CCBB71";
+    case "dragon":
+      return "#8773FF";
+    case "water":
+      return "#57ADFF";
+    case "bug":
+      return "#C3D21E"
+    case "dark":
+      return "#8C6654";
+    case "fighting":
+      return "#A85642";
+    case "ghost":
+      return "#7672D2";
+    case "steel":
+      return "#C4C2DB";
+    case "flying":
+      return "#76A2FF";
+    case "electric":
+      return "#FDE13B";
+    case "fairy":
+      return "#F9AEFF";
+    default:
+      return "#fff";
+  }
+}
 
 // DOM Updaters
 function clearList() {
   resultsWrapper.removeChild(resultsWrapper.children[0]);
-  console.log('cleared list');
 }
 
 function showLoadingAnimation() {
@@ -78,8 +121,10 @@ function addPokemonCardToDOM(pokemon) {
   typesArray.forEach((typeItem) => {
     // add types in types div
     const typeDiv = document.createElement('DIV');
+    const typeName = typeItem.type.name;
     typeDiv.classList.add('type');
-    typeDiv.innerText = typeItem.type.name;
+    typeDiv.style.backgroundColor = colorTypeBox(typeName);
+    typeDiv.innerText = typeName;
 
     typesDiv.appendChild(typeDiv);
   });
@@ -99,6 +144,7 @@ async function getPokemon(limit = 20, offset = 0) {
   setTimeout(function() {
     clearList();
     const pokemon = data.results;
+    console.log(pokemon);
     addPokemonListToDOM(pokemon);
   }, formTimeout);
 }
@@ -107,6 +153,22 @@ async function getPokemonByName(name) {
   clearList();
   showLoadingAnimation();
   const response = await fetch(`${baseUrl}/pokemon/${name}`, {cache: "force-cache"});
+  const data = await response.json();
+  console.log(data);
+  setTimeout(function() {
+    clearList();
+    const pokemon = data;
+    addPokemonCardToDOM(pokemon);
+  }, 1);
+}
+
+async function getRandomPokemon() {
+  clearList();
+  showLoadingAnimation();
+
+  const randomId = Math.floor(Math.random() * 807);
+
+  const response = await fetch(`${baseUrl}/pokemon/${randomId}`, {cache: "force-cache"});
   const data = await response.json();
   console.log(data);
   setTimeout(function() {
