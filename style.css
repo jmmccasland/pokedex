@@ -6,6 +6,7 @@
   --c-accent--dark: #117dc0;
   --c-white: #fff;
   --c-text: #263238;
+  --c-grey--light: #efefef;
   --c-grey: #dfdede;
   --m-gutter: 1rem;
   --f-ranchers: 'Ranchers', cursive;
@@ -119,6 +120,7 @@ footer a {
   display: inline-block;
   padding: 0.75rem 1rem;
   border-radius: 2px;
+  line-height: 1;
   text-transform: capitalize;
   color: var(--c-white);
   background-color: var(--c-accent);
@@ -145,6 +147,8 @@ footer a {
 }
 
 .search-form {
+  display: flex;
+  align-items: center;
   margin-bottom: 1rem;
   border: 2px solid var(--c-grey);
   border-radius: 2px;
@@ -166,6 +170,11 @@ footer a {
   outline: none;
 }
 
+.search-form__submit {
+  margin-right: 0.3rem;
+  min-width: 8rem;
+}
+
 /* Pokemon List */
 .pokemon-wrapper {
   position: relative;
@@ -177,7 +186,6 @@ footer a {
   transition: border-color var(--transition-speed);
 }
 
-.pokemon-wrapper:hover,
 .pokemon-wrapper:focus-within {
   border-color: var(--c-accent);
 }
@@ -255,4 +263,58 @@ footer a {
 @keyframes rotatePokeball {
   from { transform: var(--translate) var(--rotateFrom); }
   to { transform: var(--translate) var(--rotateTo); }
+}
+
+
+/* Pokemon Detail */
+.poke-detail {
+  width: 100%;
+  max-width: 15rem;
+  margin: 0 auto;
+}
+
+.poke-detail__image {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: var(--c-grey--light);
+}
+
+.poke-detail__image img {
+  width: 100%;
+}
+
+.poke-detail__number {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 0;
+  border-radius: 2px;
+  font-weight: bold;
+  color: var(--c-text);
+}
+
+.poke-detail__name {
+  margin: 0.5rem 0;
+  font-size: 2rem;
+  text-transform: capitalize;
+}
+
+.poke-detail__types {
+  display: flex;
+}
+
+.poke-detail__types .type {
+  width: 5rem;
+  padding: 4px;
+  border-radius: 2px;
+  text-transform: capitalize;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--c-white);
+  background: var(--c-primary--dark);
+}
+
+.poke-detail__types > * + * {
+  margin-left: 5px;
 }
