@@ -51,9 +51,21 @@ function clearList() {
   resultsWrapper.removeChild(resultsWrapper.children[0]);
 }
 
+function clearInput() {
+  const searchInput = document.querySelector('.js-search-input');
+  searchInput.value = '';
+}
+
 function showLoadingAnimation() {
   const pokeballHtml = '<div class="pokeball"><div class="pokeball__center-border"></div><div class="pokeball__center-circle"></div</div>';
   resultsWrapper.innerHTML = pokeballHtml;
+}
+
+function showErrorMessage(searchTerm) {
+  const errorMessage = document.createElement('P');
+  errorMessage.classList.add('placeholder-list-text');
+  errorMessage.innerHTML = `The Pokemon, <strong>${searchTerm}</strong>, could not be found`;
+  resultsWrapper.appendChild(errorMessage)
 }
 
 function addPokemonListToDOM(pokemon) {
@@ -141,7 +153,7 @@ async function getPokemon(limit = 20, offset = 0) {
   showLoadingAnimation();
   const response = await fetch(`${baseUrl}/pokemon?limit=${limit}&offset=${offset}`);
   const data = await response.json();
-  setTimeout(function() {
+  setTimeout(function () {
     clearList();
     const pokemon = data.results;
     console.log(pokemon);
@@ -152,14 +164,20 @@ async function getPokemon(limit = 20, offset = 0) {
 async function getPokemonByName(name) {
   clearList();
   showLoadingAnimation();
-  const response = await fetch(`${baseUrl}/pokemon/${name}`, {cache: "force-cache"});
-  const data = await response.json();
-  console.log(data);
-  setTimeout(function() {
+
+  try {
+    const response = await fetch(`${baseUrl}/pokemon/${name}`, {
+      cache: "force-cache"
+    });
+    const data = await response.json();
     clearList();
     const pokemon = data;
     addPokemonCardToDOM(pokemon);
-  }, 1);
+    clearInput();
+  } catch {
+    // clearList();
+    // showErrorMessage(name);
+  }
 }
 
 async function getRandomPokemon() {
@@ -168,28 +186,22 @@ async function getRandomPokemon() {
 
   const randomId = Math.floor(Math.random() * 807);
 
-  const response = await fetch(`${baseUrl}/pokemon/${randomId}`, {cache: "force-cache"});
+  const response = await fetch(`${baseUrl}/pokemon/${randomId}`, {
+    cache: "force-cache"
+  });
   const data = await response.json();
-  console.log(data);
-  setTimeout(function() {
+  setTimeout(function () {
     clearList();
     const pokemon = data;
     addPokemonCardToDOM(pokemon);
   }, 1);
 }
 
-// Event Listeners
-const first150Button = document.querySelector('.js-get-first-150');
-first150Button.addEventListener('click', (event) => {
-  event.preventDefault();
-  getPokemon(150, 0);
-});
-
 const searchForm = document.querySelector('.js-search-form');
 const searchInput = document.querySelector('.js-search-input');
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const name = searchInput.value;
+  const name = searchInput.value.toLowerCase();
   getPokemonByName(name);
 });
