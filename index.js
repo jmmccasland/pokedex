@@ -63,28 +63,9 @@ function showLoadingAnimation() {
 
 function showErrorMessage(searchTerm) {
   const errorMessage = document.createElement('P');
-  errorMessage.classList.add('placeholder-list-text');
-  errorMessage.innerHTML = `The Pokemon, <strong>${searchTerm}</strong>, could not be found`;
+  errorMessage.classList.add('error-message');
+  errorMessage.innerHTML = `The Pokemon, <em>${searchTerm}</em>, could not be found`;
   resultsWrapper.appendChild(errorMessage)
-}
-
-function addPokemonListToDOM(pokemon) {
-  const list = document.createElement('UL');
-  resultsWrapper.append(list);
-
-  pokemon.forEach((poke) => {
-    list.classList.add('pokemon-list');
-
-    const listItem = document.createElement('LI');
-    const link = document.createElement('A');
-    listItem.append(link);
-
-    link.innerText = poke.name;
-    link.setAttribute('href', poke.url);
-    link.classList.add('pokemon-list__item');
-
-    list.append(listItem);
-  });
 }
 
 function addPokemonCardToDOM(pokemon) {
@@ -116,7 +97,7 @@ function addPokemonCardToDOM(pokemon) {
   // set inner text of span
   number.innerText = `#${pokemon.id}`;
   // append to pokeCard
-  pokeCard.appendChild(number);
+  imageDiv.appendChild(number);
 
 
   // add h2 for pokemon name
@@ -148,25 +129,12 @@ function addPokemonCardToDOM(pokemon) {
 }
 
 // Data Getters
-async function getPokemon(limit = 20, offset = 0) {
-  clearList();
-  showLoadingAnimation();
-  const response = await fetch(`${baseUrl}/pokemon?limit=${limit}&offset=${offset}`);
-  const data = await response.json();
-  setTimeout(function () {
-    clearList();
-    const pokemon = data.results;
-    console.log(pokemon);
-    addPokemonListToDOM(pokemon);
-  }, formTimeout);
-}
-
 async function getPokemonByName(name) {
   clearList();
   showLoadingAnimation();
 
   try {
-    const response = await fetch(`${baseUrl}/pokemon/${name}`, {
+    const response = await fetch(`${baseUrl}/pokemon/${name.toLowerCase()}`, {
       cache: "force-cache"
     });
     const data = await response.json();
@@ -175,26 +143,9 @@ async function getPokemonByName(name) {
     addPokemonCardToDOM(pokemon);
     clearInput();
   } catch {
-    // clearList();
-    // showErrorMessage(name);
-  }
-}
-
-async function getRandomPokemon() {
-  clearList();
-  showLoadingAnimation();
-
-  const randomId = Math.floor(Math.random() * 807);
-
-  const response = await fetch(`${baseUrl}/pokemon/${randomId}`, {
-    cache: "force-cache"
-  });
-  const data = await response.json();
-  setTimeout(function () {
     clearList();
-    const pokemon = data;
-    addPokemonCardToDOM(pokemon);
-  }, 1);
+    showErrorMessage(name);
+  }
 }
 
 const searchForm = document.querySelector('.js-search-form');
@@ -202,6 +153,6 @@ const searchInput = document.querySelector('.js-search-input');
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const name = searchInput.value.toLowerCase();
+  const name = searchInput.value;
   getPokemonByName(name);
 });
